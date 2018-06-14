@@ -1,19 +1,12 @@
-import requests
-import json
-import xlsxwriter
-import time
 from datetime import datetime
+import json
+import time
 
-# Import the byte stream handler.
 from io import BytesIO
-
-# Import urlopen() for either Python 2 or 3.
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
-
 from forex_python.converter import CurrencyRates
+import requests
+from urllib.request import urlopen
+import xlsxwriter
 
 
 ##########################################
@@ -26,8 +19,6 @@ def addEntry(worksheet,row,details,image_data):
         worksheet.write(row, col, item)
         col+=1
 
-    # Write the byte stream image to a cell. Note, the filename must be
-    # specified. In this case it will be read from url string.
     worksheet.insert_image(row, col, 'Image Data', {'image_data': image_data})
 
 ##########################################
@@ -38,7 +29,6 @@ def getimg(targetURL):
     image_data = BytesIO(urlopen(targetURL).read())
     return image_data
     
-
 ##########################################
 # Main Function
 ##########################################
@@ -83,7 +73,6 @@ else:
             while page<=pages:
                 print "Collecting Data for page",page
                 r = requests.get('https://www.kickstarter.com/discover/advanced.json?category_id=334&woe_id=0&sort=popularity&seed=2508285&page=' + str(page))
-                #print r.status_code
                 if r.status_code!=200:
                     print "Connection Error! Status:",r.status_code
                     break
@@ -91,7 +80,6 @@ else:
 
                 total+=len(data["projects"])
                 for index in range(len(data["projects"])):
-                    #print "%s,%f,%s,%f" % (data["projects"][index]["name"], data["projects"][index]["goal"], data["projects"][index]["currency"], data["projects"][index]["pledged"])
                     details = []
 
                     details.append(ctr)
@@ -121,7 +109,6 @@ else:
                     details.append(deadline)
                     details.append(data["projects"][index]["urls"]["web"]["project"])
 
-                    #durationInfo(data["projects"][index]["urls"]["web"]["project"])
                     l_date = datetime.strptime(launch_date,'%c')
                     d_date = datetime.strptime(deadline,'%c')
                     details.append(abs((l_date-d_date).days))
