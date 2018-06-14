@@ -1,2 +1,2 @@
 # kickstarter_scraper
-Scrapes the Kickstarter Data into an excel sheet for easy viewing.
+Scrapes the Kickstarter Data into an excel sheet for further analysis.
